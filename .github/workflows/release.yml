@@ -28,20 +28,20 @@ jobs:
       - name: Publish 
         run: npm run build
 
-      # - name: release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     draft: true
-      #     files: |
-      #       dist/*.exe
-      #       dist/*.zip
-      #       dist/*.dmg
-      #       dist/*.AppImage
-      #       dist/*.snap
-      #       dist/*.deb
-      #       dist/*.rpm
-      #       dist/*.tar.gz
-      #       dist/*.yml
-      #       dist/*.blockmap
+      - name: release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          files: |
+            release/**/*.exe
+            release/**/*.zip
+            release/**/*.dmg
+            release/**/*.AppImage
+            release/**/*.snap
+            release/**/*.deb
+            release/**/*.rpm
+            release/**/*.tar.gz
+            release/**/*.yml
+            release/**/*.blockmap
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
