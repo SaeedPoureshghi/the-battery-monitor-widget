@@ -27,6 +27,9 @@ jobs:
 
       - name: Publish 
         run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: release
         uses: softprops/action-gh-release@v1
@@ -45,3 +48,4 @@ jobs:
             release/**/*.blockmap
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
