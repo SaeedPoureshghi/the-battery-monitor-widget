@@ -31,5 +31,9 @@
     "vite-plugin-electron-renderer": "^0.14.5",
     "vite-plugin-svgr": "^4.2.0"
   },
-  "main": "dist-electron/main.js"
+  "main": "dist-electron/main.js",
+  "author": {
+    "name": "Saeed Poureshghi",
+    "email": "saeed.po@gmail.com"
+  }
 }
