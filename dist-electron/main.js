@@ -1,71 +1,52 @@
-import { app, BrowserWindow, ipcMain, screen } from "electron";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-process.env.APP_ROOT = path.join(__dirname, "..");
-const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
-const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
-const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
-let win;
-function createWindow() {
-  const primaryScreen = screen.getPrimaryDisplay();
-  const window_width = primaryScreen.workArea.width;
-  win = new BrowserWindow({
+import { app as n, BrowserWindow as t, ipcMain as r, screen as p } from "electron";
+import { fileURLToPath as d } from "node:url";
+import o from "node:path";
+const s = o.dirname(d(import.meta.url));
+process.env.APP_ROOT = o.join(s, "..");
+const i = process.env.VITE_DEV_SERVER_URL, R = o.join(process.env.APP_ROOT, "dist-electron"), a = o.join(process.env.APP_ROOT, "dist");
+process.env.VITE_PUBLIC = i ? o.join(process.env.APP_ROOT, "public") : a;
+let e;
+function l() {
+  const c = p.getPrimaryDisplay().workArea.width;
+  e = new t({
     title: "Battery Health Monitor",
     type: "desktop",
-    icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
-    autoHideMenuBar: true,
-    fullscreenable: false,
-    resizable: false,
-    skipTaskbar: true,
+    icon: o.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
+    autoHideMenuBar: !0,
+    fullscreenable: !1,
+    resizable: !1,
+    skipTaskbar: !0,
     // minimizable: false,
     width: 250,
     height: 250,
-    x: window_width - 300,
+    x: c - 300,
     y: 50,
     // alwaysOnTop: true,
     // frame: false,
-    frame: false,
+    frame: !1,
     webPreferences: {
-      preload: path.join(__dirname, "preload.mjs"),
-      devTools: true
+      preload: o.join(s, "preload.mjs"),
+      devTools: !0
     }
-  });
-  win.webContents.on("did-finish-load", () => {
-    win == null ? void 0 : win.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());
-  });
-  if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL);
-  } else {
-    win.loadFile(path.join(RENDERER_DIST, "index.html"));
-  }
+  }), e.webContents.on("did-finish-load", () => {
+    e == null || e.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());
+  }), i ? e.loadURL(i) : e.loadFile(o.join(a, "index.html"));
 }
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-    win = null;
-  }
+n.on("window-all-closed", () => {
+  process.platform !== "darwin" && (n.quit(), e = null);
 });
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+n.on("activate", () => {
+  t.getAllWindows().length === 0 && l();
 });
-ipcMain.on("warn-user", () => {
-  if (win) {
-    win.show();
-    win.setOpacity(1);
-  }
+r.on("warn-user", () => {
+  e && (e.show(), e.setOpacity(1));
 });
-ipcMain.on("hide-window", () => {
-  if (win) {
-    win.setOpacity(0);
-  }
+r.on("hide-window", () => {
+  e && e.setOpacity(0);
 });
-app.whenReady().then(createWindow);
+n.whenReady().then(l);
 export {
-  MAIN_DIST,
-  RENDERER_DIST,
-  VITE_DEV_SERVER_URL
+  R as MAIN_DIST,
+  a as RENDERER_DIST,
+  i as VITE_DEV_SERVER_URL
 };
